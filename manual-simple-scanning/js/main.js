@@ -28,9 +28,9 @@
     rpnCalculateButton.addEventListener('click', () => {
         resetInterface();
         const inputString = rpnExpressionInput.value;
-        const inputArray = inputString.trim().split('\n');
+        const tokens = splitInputText(inputString).map(parseToken);
         try {
-            const result = calculateRpnExpression(inputArray);
+            const result = calculateRpnExpression(tokens);
             presentResult(result);
         }
         catch (error) {
@@ -56,33 +56,57 @@
         resultSection.classList.remove('hidden-element');
     }
 })();
+/* DEFINIÇÃO DE TIPOS */
+var TokenType;
+(function (TokenType) {
+    TokenType["Number"] = "Number";
+    TokenType["Plus"] = "Plus";
+    TokenType["Minus"] = "Minus";
+    TokenType["Asterisk"] = "Asterisk";
+    TokenType["Slash"] = "Slash";
+})(TokenType || (TokenType = {}));
 /* FUNÇÕES DE CÁLCULO */
+function splitInputText(input) {
+    return input.trim().split('\n');
+}
+function parseToken(lexeme) {
+    if (lexeme === '+')
+        return { type: TokenType.Plus, lexeme };
+    if (lexeme === '-')
+        return { type: TokenType.Minus, lexeme };
+    if (lexeme === '*')
+        return { type: TokenType.Asterisk, lexeme };
+    if (lexeme === '/')
+        return { type: TokenType.Slash, lexeme };
+    if (isNumber(lexeme))
+        return { type: TokenType.Number, lexeme };
+    throw new Error(`Token inválido: ${lexeme}`);
+}
 function calculateRpnExpression(tokens) {
     const stack = [];
     for (const token of tokens) {
-        if (isNumber(token)) {
-            stack.push(Number(token));
-        }
-        else if (isOperator(token)) {
-            const b = stack.pop();
-            const a = stack.pop();
-            if (a === undefined || b === undefined)
-                throw new Error('Expressão inválida');
-            stack.push(operate(a, b, token));
-        }
-        else {
-            throw new Error(`Token inválido: ${token}`);
-        }
+        const tokenTypeToFunction = {
+            [TokenType.Number]: () => stack.push(Number(token.lexeme)),
+            [TokenType.Plus]: () => mutateStackWithOperation(stack, '+'),
+            [TokenType.Minus]: () => mutateStackWithOperation(stack, '-'),
+            [TokenType.Asterisk]: () => mutateStackWithOperation(stack, '*'),
+            [TokenType.Slash]: () => mutateStackWithOperation(stack, '/'),
+        };
+        tokenTypeToFunction[token.type]();
     }
     if (stack.length !== 1)
-        throw new Error('Expressão inválida');
+        throw new Error('Pilha não possui apenas um elemento ao final do cálculo');
     return stack.pop();
+}
+function mutateStackWithOperation(stack, operator) {
+    const b = stack.pop();
+    const a = stack.pop();
+    if (a === undefined || b === undefined)
+        throw new Error(`Pilha vazia ao tentar operar com ${operator}`);
+    stack.push(operate(a, b, operator));
 }
 function isNumber(token) {
     return !isNaN(Number(token));
-}
-function isOperator(token) {
-    return ['+', '-', '*', '/'].includes(token);
 }
 function operate(a, b, operator) {
     const operations = {
