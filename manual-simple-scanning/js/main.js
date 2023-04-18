@@ -85,14 +85,14 @@ function parseToken(lexeme) {
 function calculateRpnExpression(tokens) {
     const stack = [];
     for (const token of tokens) {
-        const tokenTypeToFunction = {
+        const tokenTypeToStackMutation = {
             [TokenType.Number]: () => stack.push(Number(token.lexeme)),
             [TokenType.Plus]: () => mutateStackWithOperation(stack, '+'),
             [TokenType.Minus]: () => mutateStackWithOperation(stack, '-'),
             [TokenType.Asterisk]: () => mutateStackWithOperation(stack, '*'),
             [TokenType.Slash]: () => mutateStackWithOperation(stack, '/'),
         };
-        tokenTypeToFunction[token.type]();
+        tokenTypeToStackMutation[token.type]();
     }
     if (stack.length !== 1)
         throw new Error('Pilha não possui apenas um elemento ao final do cálculo');

@@ -129,7 +129,7 @@ function calculateRpnExpression(tokens: Token[]): number {
     const stack: number[] = [];
     
     for (const token of tokens) {
-        const tokenTypeToFunction: Record<TokenType, () => void> = {
+        const tokenTypeToStackMutation: Record<TokenType, () => void> = {
             [TokenType.Number]: () => stack.push(Number(token.lexeme)),
             [TokenType.Plus]: () => mutateStackWithOperation(stack, '+'),
             [TokenType.Minus]: () => mutateStackWithOperation(stack, '-'),
@@ -137,10 +137,10 @@ function calculateRpnExpression(tokens: Token[]): number {
             [TokenType.Slash]: () => mutateStackWithOperation(stack, '/'),
         }
 
-        tokenTypeToFunction[token.type]();
+        tokenTypeToStackMutation[token.type]();
     }
 
-    if (stack.length !== 1) throw new Error('Pilha não possui apenas um elemento ao final do cálculo');
+    if (stack.length !== 1) throw new Error('Pilha possui mais de um elemento ao final do cálculo');
 
     return stack.pop();
 }
