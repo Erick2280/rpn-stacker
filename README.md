@@ -1,5 +1,5 @@
 # RPN Stacker
-**Teoria e Implementação de Lingugagens Computacionais (IF688)**  
+**Teoria e Implementação de Linguagens Computacionais (IF688)**  
 **Universidade Federal de Pernambuco**  
 Erick Almeida (<eaor@cin.ufpe.br>)
 
