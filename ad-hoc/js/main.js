@@ -66,6 +66,8 @@ function calculateRpnExpression(tokens) {
         else if (isOperator(token)) {
             const b = stack.pop();
             const a = stack.pop();
+            if (a === undefined || b === undefined)
+                throw new Error('Expressão inválida');
             stack.push(operate(a, b, token));
         }
         else {
