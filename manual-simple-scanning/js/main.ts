@@ -34,17 +34,19 @@
         resetInterface();
 
         const inputString = (rpnExpressionInput as unknown as HTMLTextAreaElement).value;
-        const tokens = splitInputText(inputString).map(parseToken);
 
         try {
+            const tokens = splitInputText(inputString).map(parseToken);
             const result = calculateRpnExpression(tokens);
             presentResult(result);
+            presentTokens(tokens);
         } catch (error) {
             presentErrorAlert(error.message);
         }
     });
 
     function resetInterface() {
+        removeTokensContainer();
         hideResultSection();
         dismissErrorAlert();
     }
@@ -62,9 +64,41 @@
         resultSection.classList.add('hidden-element');
     }
 
+    function removeTokensContainer() {
+        const tokenContainer = document.querySelector('.tokens-container');
+        if (tokenContainer) tokenContainer.remove();
+    }
+
     function presentResult(result: number) {
         resultContainer.innerText = result.toString();
         resultSection.classList.remove('hidden-element');
+    }
+
+    function createTokenElements(tokens: Token[]) {
+        const tokensContainer = document.createElement('div');
+        tokensContainer.classList.add('tokens-container');
+
+        for (const token of tokens) {
+            const tokenTypeToVariantName: Record<TokenType, string> = {
+                [TokenType.Number]: 'primary',
+                [TokenType.Plus]: 'success',
+                [TokenType.Minus]: 'success',
+                [TokenType.Asterisk]: 'success',
+                [TokenType.Slash]: 'success',
+            }
+            const tokenElement = document.createElement('sl-tag');
+            tokenElement.setAttribute('variant', tokenTypeToVariantName[token.type]);
+            tokenElement.classList.add('token');
+            tokenElement.innerText = `${token.type}: ${token.lexeme}`;
+            tokensContainer.appendChild(tokenElement);
+        }
+
+        return tokensContainer;
+    }
+
+    function presentTokens(tokens: Token[]) {
+        const tokensContainer = createTokenElements(tokens);
+        resultSection.appendChild(tokensContainer);
     }
 })()
 

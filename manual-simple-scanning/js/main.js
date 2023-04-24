@@ -28,16 +28,18 @@
     rpnCalculateButton.addEventListener('click', () => {
         resetInterface();
         const inputString = rpnExpressionInput.value;
-        const tokens = splitInputText(inputString).map(parseToken);
         try {
+            const tokens = splitInputText(inputString).map(parseToken);
             const result = calculateRpnExpression(tokens);
             presentResult(result);
+            presentTokens(tokens);
         }
         catch (error) {
             presentErrorAlert(error.message);
         }
     });
     function resetInterface() {
+        removeTokensContainer();
         hideResultSection();
         dismissErrorAlert();
     }
@@ -51,9 +53,37 @@
     function hideResultSection() {
         resultSection.classList.add('hidden-element');
     }
+    function removeTokensContainer() {
+        const tokenContainer = document.querySelector('.tokens-container');
+        if (tokenContainer)
+            tokenContainer.remove();
+    }
     function presentResult(result) {
         resultContainer.innerText = result.toString();
         resultSection.classList.remove('hidden-element');
+    }
+    function createTokenElements(tokens) {
+        const tokensContainer = document.createElement('div');
+        tokensContainer.classList.add('tokens-container');
+        for (const token of tokens) {
+            const tokenTypeToVariantName = {
+                [TokenType.Number]: 'primary',
+                [TokenType.Plus]: 'success',
+                [TokenType.Minus]: 'success',
+                [TokenType.Asterisk]: 'success',
+                [TokenType.Slash]: 'success',
+            };
+            const tokenElement = document.createElement('sl-tag');
+            tokenElement.setAttribute('variant', tokenTypeToVariantName[token.type]);
+            tokenElement.classList.add('token');
+            tokenElement.innerText = `${token.type}: ${token.lexeme}`;
+            tokensContainer.appendChild(tokenElement);
+        }
+        return tokensContainer;
+    }
+    function presentTokens(tokens) {
+        const tokensContainer = createTokenElements(tokens);
+        resultSection.appendChild(tokensContainer);
     }
 })();
 /* DEFINIÇÃO DE TIPOS */
@@ -95,7 +125,7 @@ function calculateRpnExpression(tokens) {
         tokenTypeToStackMutation[token.type]();
     }
     if (stack.length !== 1)
-        throw new Error('Pilha não possui apenas um elemento ao final do cálculo');
+        throw new Error('Pilha possui mais de um elemento ao final do cálculo');
     return stack.pop();
 }
 function mutateStackWithOperation(stack, operator) {

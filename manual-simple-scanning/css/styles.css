@@ -112,6 +112,11 @@ p.font-bold, h1.font-bold, h2.font-bold, h3.font-bold {
     font-size: 1em;
 }
 
+.tokens-container {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
 .large-text {
     font-size: 2em;
     font-weight: 700;
