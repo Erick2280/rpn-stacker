@@ -1,0 +1,142 @@
+body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--sl-color-gray-700);
+    margin: 0px;
+    font-size: 16px;
+    overflow-y: hidden;
+}
+
+sl-textarea::part(base), sl-button::part(base) {
+    font-family: 'DM Sans', sans-serif;
+}
+
+sl-alert p {
+    margin-top: 0.125em;
+    margin-bottom: 0.125em;
+}
+
+h1,  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+input {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.github-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+    0%,
+    100% {
+        transform: rotate(0);
+    }
+
+    20%,
+    60% {
+        transform: rotate(-25deg);
+    }
+
+    40%,
+    80% {
+        transform: rotate(10deg);
+    }
+}
+
+.gray-color {
+    color: var(--sl-color-gray-700);
+}
+
+.blue-color {
+    color: var(--sl-color-primary-600);
+}
+
+@media (max-width: 500px) {
+    .github-corner:hover .octo-arm {
+        animation: none;
+    }
+
+    .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out;
+    }
+}
+
+.flex {
+    display: flex;
+}
+
+#app {
+    flex-direction: column;
+    max-width: 768px;
+    margin: auto;
+    padding: 2em;
+}
+
+#app > sl-alert {
+    margin: 1rem;
+}
+
+.title {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1.5em;
+}
+
+.section-container {
+    padding: 1em;
+}
+
+.section-container sl-details {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.section-container sl-details > p {
+    font-size: 0.8em;
+}
+
+p.font-bold, h1.font-bold, h2.font-bold, h3.font-bold {
+    font-weight: 700;
+}
+
+.block-button {
+    margin-top: 1.5em;
+    width: 100%;
+}
+
+#result-section h2 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.tokens-container {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.large-text {
+    font-size: 2em;
+    font-weight: 700;
+}
+
+footer {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+.footer-course {
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.footer-author {
+    padding-bottom: 0.75em;
+}
+
+.hidden-element {
+    display: none;
+}
