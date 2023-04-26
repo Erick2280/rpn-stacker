@@ -7,4 +7,4 @@ Erick Almeida (<eaor@cin.ufpe.br>)
 
 - [Task 01 - Ad hoc](./ad-hoc/)
 - [Task 02 - Manual/Simple Scanning](./manual-simple-scanning/)
-- [Task 03 - Automatic/Regex Scanning](/automatic-regex-scanning/)
+- [Task 03 - Automatic/Regex Scanning](./automatic-regex-scanning/)
